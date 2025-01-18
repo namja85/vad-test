@@ -1,6 +1,6 @@
 import { scan } from "react-scan";
 import { VADModule } from "@/components/VADModule";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { VadMode } from "@/types";
 import { Button } from "@/components/Button";
 
@@ -13,21 +13,37 @@ if (typeof window !== "undefined") {
 
 export default function Home() {
   const [vadMode, setVadMode] = useState<VadMode>("command");
+  const vadModuleRef = useRef<VADModule | null>(null);
 
   const handleToggleMode = () => {
     setVadMode(vadMode === "command" ? "conversation" : "command");
   };
 
+  console.log("index");
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen space-y-4">
       <h1 className="text-3xl font-bold underline">Hello World</h1>
-      <div className="my-4">
-        <p className="space-x-8">
-          <span className="font-bold">VadMode: {vadMode}</span>
-          <Button onClick={handleToggleMode}>toggleMode</Button>
-        </p>
+      <div className="space-x-8">
+        <span className="font-bold">VadMode: {vadMode}</span>
+        <Button onClick={handleToggleMode}>toggleMode</Button>
       </div>
-      <VADModule key={vadMode} vadMode={vadMode} />
+      <div className="space-x-8">
+        <p>use child component's instance</p>
+        <Button
+          onClick={() => vadModuleRef.current?.instance.start()}
+          disabled={vadModuleRef.current?.instance.listening}
+        >
+          VAD Start
+        </Button>
+        <Button
+          onClick={() => vadModuleRef.current?.instance.pause()}
+          disabled={!vadModuleRef.current?.instance.listening}
+        >
+          VAD Pause
+        </Button>
+      </div>
+      <VADModule ref={vadModuleRef} key={vadMode} vadMode={vadMode} />
     </div>
   );
 }
