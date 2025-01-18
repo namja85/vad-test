@@ -19,6 +19,8 @@ export const VADModule = ({ vadMode }: { vadMode: VadMode }) => {
     onSpeechEnd(audio: Float32Array) {
       console.log("speech end", audio);
     },
+    baseAssetPath: "/",
+    onnxWASMBasePath: "/",
     startOnLoad: false,
     ...vadOptionsByMode[vadMode],
   });

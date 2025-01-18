@@ -33,3 +33,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# vad
+public/vad.worklet.bundle.min.js
+public/*.wasm
+public/*.onnx

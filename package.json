@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "copyvad": "bash copy-vad.sh"
   },
   "dependencies": {
     "@ricky0123/vad-react": "^0.0.28",
@@ -21,6 +22,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
+    "copy-webpack-plugin": "^12.0.2",
     "eslint": "^8",
     "eslint-config-next": "13.5.8",
     "postcss": "^8",
