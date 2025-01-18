@@ -1,15 +1,26 @@
-import { useMicVAD } from "@ricky0123/vad-react";
 import clsx from "clsx";
+import { useMicVAD } from "@ricky0123/vad-react";
+import { VadMode, VadOptions } from "@/types";
+import { Button } from "./Button";
 
-const vadDefaultOptions = {};
+const vadDefaultOptions: VadOptions = {};
+const vadOptionsByMode: { [key in VadMode]: VadOptions } = {
+  command: {
+    redemptionFrames: 5,
+  },
+  conversation: {
+    redemptionFrames: 20,
+  },
+};
 
-export const VADModule = () => {
+export const VADModule = ({ vadMode }: { vadMode: VadMode }) => {
   // const vad = useMicVAD({ ...vadDefaultOptions });
   const vad = useMicVAD({
     onSpeechEnd(audio: Float32Array) {
       console.log("speech end", audio);
     },
     startOnLoad: false,
+    ...vadOptionsByMode[vadMode],
   });
 
   return (
@@ -21,26 +32,15 @@ export const VADModule = () => {
         <p>Error: {vad.errored ? vad.errored : "None"}</p>
         <p>Loading: {vad.loading ? "Yes" : "No"}</p>
       </div>
-      <button
-        className={clsx(
-          "bg-blue-500 text-white p-2 rounded-md",
-          vad.listening && "bg-gray-500"
-        )}
-        onClick={() => vad.start()}
-        disabled={vad.listening}
-      >
+
+      <hr />
+
+      <Button onClick={() => vad.start()} disabled={vad.listening}>
         Start
-      </button>
-      <button
-        className={clsx(
-          "bg-blue-500 text-white p-2 rounded-md",
-          !vad.listening && "bg-gray-500"
-        )}
-        onClick={() => vad.pause()}
-        disabled={!vad.listening}
-      >
+      </Button>
+      <Button onClick={() => vad.pause()} disabled={!vad.listening}>
         Pause
-      </button>
+      </Button>
     </div>
   );
 };
